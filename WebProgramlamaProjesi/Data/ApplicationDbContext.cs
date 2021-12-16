@@ -7,9 +7,15 @@ using WebProgramlamaProjesi.Models;
 
 namespace WebProgramlamaProjesi.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public DbSet<User> User { get; set; }
+        public DbSet<Adres> Adres { get; set; }
+        public DbSet<Blog> Blog { get; set; }
+        public DbSet<Hakkimizda> Hakkimizda { get; set; }
+        public DbSet<Iletisim> Iletisim { get; set; }
+        public DbSet<Yorumlar> Yorumlar { get; set; }
+        public DbSet<AnaSayfa> AnaSayfa { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
