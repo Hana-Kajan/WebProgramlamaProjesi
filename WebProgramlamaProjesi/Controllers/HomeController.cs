@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using WebProgramlamaProjesi.Data;
 using WebProgramlamaProjesi.Models;
 
 namespace WebProgramlamaProjesi.Controllers
@@ -12,10 +14,13 @@ namespace WebProgramlamaProjesi.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -23,7 +28,12 @@ namespace WebProgramlamaProjesi.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> About()
+        {
+            return View(await _context.Hakkimizda.ToListAsync());
+        }
+
+        public IActionResult Blog()
         {
             return View();
         }
@@ -35,3 +45,5 @@ namespace WebProgramlamaProjesi.Controllers
         }
     }
 }
+
+
