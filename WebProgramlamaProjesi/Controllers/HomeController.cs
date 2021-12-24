@@ -15,7 +15,7 @@ namespace WebProgramlamaProjesi.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
-
+        BlogYorum by = new BlogYorum();
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
@@ -23,9 +23,9 @@ namespace WebProgramlamaProjesi.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _context.Blog.ToListAsync());
         }
 
         public async Task<IActionResult> About()
@@ -33,9 +33,18 @@ namespace WebProgramlamaProjesi.Controllers
             return View(await _context.Hakkimizda.ToListAsync());
         }
 
-        public IActionResult Blog()
+        public async Task<IActionResult> Blog()
         {
-            return View();
+            by.Deger1 = await _context.Blog.ToListAsync();
+            by.Deger3 = await _context.Blog.Take(3).ToListAsync();
+            return View(by);
+        }
+
+        public async Task<IActionResult> BlogDetayAsync(int id)
+        {
+            by.Deger1 = await _context.Blog.Where(x => x.ID == id).ToListAsync();
+            by.Deger2 = await _context.Yorumlar.Where(x => x.BlogId == id).ToListAsync();
+            return View(by);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
