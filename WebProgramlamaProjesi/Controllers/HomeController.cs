@@ -28,10 +28,21 @@ namespace WebProgramlamaProjesi.Controllers
             return View(await _context.Blog.ToListAsync());
         }
 
+        public async Task<PartialViewResult> _HomePartial1()
+        {
+            return PartialView(await _context.Blog.OrderByDescending(item=>item.ID).Take(2).ToListAsync());
+        }
+
+        public async Task<PartialViewResult> _HomePartial2()
+        {
+            return PartialView(await _context.Blog.Take(1).ToListAsync());
+        }
+
         public async Task<IActionResult> About()
         {
             return View(await _context.Hakkimizda.ToListAsync());
         }
+        
 
         public async Task<IActionResult> Blog()
         {
