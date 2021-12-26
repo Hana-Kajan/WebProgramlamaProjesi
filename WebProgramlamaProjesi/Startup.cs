@@ -18,6 +18,8 @@ namespace WebProgramlamaProjesi
 {
     public class Startup
     {
+        private object dbInitializer;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,15 +30,31 @@ namespace WebProgramlamaProjesi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+    //        services.AddIdentity<User, IdentityRole>()
+    //.AddRoles<IdentityRole>()
+    //.AddDefaultTokenProviders()
+    //.AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //services.AddIdentity<User, IdentityRole>()
+            //   .AddDefaultTokenProviders()
+            //   .AddDefaultUI()
+            //   .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //services.AddScoped<IDbInitializer, DbInitializer>();
+
+
+
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+
             services.AddControllersWithViews();
 
             services.AddRazorPages();
@@ -64,13 +82,19 @@ namespace WebProgramlamaProjesi
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //dbInitializer.Initialize();
+
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                
                 endpoints.MapRazorPages();
             });
         }
     }
 }
+

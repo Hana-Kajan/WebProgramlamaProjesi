@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using WebProgramlamaProjesi.Models;
 
 namespace WebProgramlamaProjesi.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     public class BlogController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -42,7 +44,7 @@ namespace WebProgramlamaProjesi.Controllers
 
             return View(blog);
         }
-
+        
         // GET: Blog/Create
         public IActionResult Create()
         {

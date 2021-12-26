@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,6 +12,7 @@ using WebProgramlamaProjesi.Models;
 
 namespace WebProgramlamaProjesi.Controllers
 {
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -38,6 +40,16 @@ namespace WebProgramlamaProjesi.Controllers
             return PartialView(await _context.Blog.Take(1).ToListAsync());
         }
 
+        public async Task<PartialViewResult> _HomePartial3()
+        {
+            return PartialView(await _context.Blog.ToListAsync());
+        }
+
+        public async Task<PartialViewResult> _HomePartial4()
+        {
+            return PartialView(await _context.Blog.Take(3).ToListAsync());
+        }
+
         public async Task<IActionResult> About()
         {
             return View(await _context.Hakkimizda.ToListAsync());
@@ -56,6 +68,21 @@ namespace WebProgramlamaProjesi.Controllers
             by.Deger1 = await _context.Blog.Where(x => x.ID == id).ToListAsync();
             by.Deger2 = await _context.Yorumlar.Where(x => x.BlogId == id).ToListAsync();
             return View(by);
+        }
+
+        [HttpGet]
+        public PartialViewResult YorumYap(int id)
+        {
+            ViewBag.deger = id;
+            return PartialView();
+        }
+
+        [HttpPost]
+        public PartialViewResult YorumYap(Yorumlar y)
+        {
+            _context.Yorumlar.Add(y);
+            _context.SaveChanges();
+            return PartialView();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
